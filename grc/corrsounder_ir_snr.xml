@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<block>
+  <name>IR SNR</name>
+  <key>corrsounder_ir_snr</key>
+  <category>[Corrsounder]/Statistics</category>
+  <import>import corrsounder</import>
+  <make>corrsounder.ir_snr(seq_len=$seq_len, max_ir_len=$max_ir_len)</make>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>Sequence length</name>
+    <key>seq_len</key>
+    <type>float</type>
+  </param>
+
+  <param>
+    <name>Maximum IR length</name>
+    <key>max_ir_len</key>
+    <type>float</type>
+  </param>
+
+  <!-- Make one 'sink' node per input. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>ir</name>
+    <type>complex<!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <vlen>$seq_len</vlen>
+  </sink>
+
+  <!-- Make one 'source' node per output. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <source>
+    <name>snr</name>
+    <type>float<!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+  </source>
+</block>

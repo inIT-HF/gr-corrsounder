@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<block>
+  <name>Sequence Correlator</name>
+  <key>corrsounder_seq_correlator_c</key>
+  <category>[Corrsounder]</category>
+  <import>import corrsounder</import>
+  <make>#if $seq_type() == 'fzc'
+corrsounder.fzc_correlator_c(n_fzc=$n, q=$q)
+#end if</make>
+  <callback>set_q($q)</callback>
+  <callback>set_n_fzc($n)</callback>
+  <param>
+      <name>Sequence Type</name>
+      <key>seq_type</key>
+      <value>fzc</value>
+      <type>enum</type>
+      <option>
+          <name>FZC</name>
+          <key>fzc</key>
+      </option>
+      <option>
+          <name>MLS</name>
+          <key>mls</key>
+      </option>
+  </param>
+  <param>
+    <name>FZC Parameter q</name>
+    <key>q</key>
+    <value>7</value>
+    <type>int</type>
+    <hide>#if $seq_type() == 'fzc' then 'none' else 'all'#</hide>
+  </param>
+  <param>
+    <name>Sequence Length</name>
+    <key>n</key>
+    <value>255</value>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </source>
+</block>

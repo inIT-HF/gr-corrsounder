@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<block>
+  <name>Error Correction</name>
+  <key>corrsounder_error_correction_cc</key>
+  <category>[Corrsounder]</category>
+  <import>import corrsounder</import>
+  <make>corrsounder.error_correction_cc($error_term_forward_transmission_tracking)</make>
+  <param>
+      <name>Type</name>
+      <key>ec_type</key>
+      <value>through</value>
+      <type>enum</type>
+      <option>
+          <name>Through</name>
+          <key>through</key>
+      </option>
+  </param>
+  <param>
+    <name>Error Term FTT</name>
+    <key>error_term_forward_transmission_tracking</key>
+    <type>complex_vector</type>
+    <hide>#if $ec_type() == 'through' then 'none' else 'all'#</hide>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </source>
+</block>

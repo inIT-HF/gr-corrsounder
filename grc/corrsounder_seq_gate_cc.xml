@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<block>
+  <name>Sequence Gate</name>
+  <key>corrsounder_seq_gate_cc</key>
+  <category>[Corrsounder]</category>
+  <import>import corrsounder</import>
+  <make>corrsounder.sequence_gate_cc($sequence_length, $sample_rate)</make>
+  <param>
+    <name>Sequence Length</name>
+    <key>sequence_length</key>
+    <value>255</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Sample Rate</name>
+    <key>sample_rate</key>
+    <value>samp_rate</value>
+    <type>float</type>
+  </param>
+  <param>
+      <name>Buffer Overflow Source</name>
+      <key>detect_overflows</key>
+      <value>none</value>
+      <type>enum</type>
+      <option>
+          <name>None</name>
+          <key>none</key>
+      </option>
+      <option>
+          <name>UHD</name>
+          <key>uhd</key>
+      </option>
+  </param>
+  <param>
+    <name>Ext. Trigger Tag Name</name>
+    <key>external_trigger_tag</key>
+    <value></value>
+    <type>string</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>complex</type>
+    <vlen>1</vlen>
+  </source>
+  <source>
+    <name>meta</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+</block>

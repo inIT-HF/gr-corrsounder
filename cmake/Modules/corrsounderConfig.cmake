@@ -1,0 +1,30 @@
+INCLUDE(FindPkgConfig)
+PKG_CHECK_MODULES(PC_CORRSOUNDER corrsounder)
+
+FIND_PATH(
+    CORRSOUNDER_INCLUDE_DIRS
+    NAMES corrsounder/api.h
+    HINTS $ENV{CORRSOUNDER_DIR}/include
+        ${PC_CORRSOUNDER_INCLUDEDIR}
+    PATHS ${CMAKE_INSTALL_PREFIX}/include
+          /usr/local/include
+          /usr/include
+)
+
+FIND_LIBRARY(
+    CORRSOUNDER_LIBRARIES
+    NAMES gnuradio-corrsounder
+    HINTS $ENV{CORRSOUNDER_DIR}/lib
+        ${PC_CORRSOUNDER_LIBDIR}
+    PATHS ${CMAKE_INSTALL_PREFIX}/lib
+          ${CMAKE_INSTALL_PREFIX}/lib64
+          /usr/local/lib
+          /usr/local/lib64
+          /usr/lib
+          /usr/lib64
+)
+
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(CORRSOUNDER DEFAULT_MSG CORRSOUNDER_LIBRARIES CORRSOUNDER_INCLUDE_DIRS)
+MARK_AS_ADVANCED(CORRSOUNDER_LIBRARIES CORRSOUNDER_INCLUDE_DIRS)
+

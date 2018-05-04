@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<block>
+  <name>Vector-based Moving Average</name>
+  <key>corrsounder_moving_average_vcc</key>
+  <category>[Corrsounder]/Utils</category>
+  <import>import corrsounder</import>
+  <make>corrsounder.moving_average_vcc($vlen, $window)</make>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>Vec Len</name>
+    <key>vlen</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Window</name>
+    <key>window</key>
+    <type>int</type>
+  </param>
+
+  <!-- Make one 'sink' node per input. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>in</name>
+    <type>complex<!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <vlen>$vlen</vlen>
+  </sink>
+
+  <!-- Make one 'source' node per output. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <source>
+    <name>out</name>
+    <type>complex<!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <vlen>$vlen</vlen>
+  </source>
+</block>
