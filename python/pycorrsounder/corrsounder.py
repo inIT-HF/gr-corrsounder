@@ -12,8 +12,8 @@ def cross_correlate_sequences(sequence_one, sequence_two):
 def cross_correlate_peridoc_sequences(sequence_one, sequence_two):
     return None
 
-def auto_correlate_sequences(sequence_one, sequence_two):
+def auto_correlate_sequence(sequence):
     return None
 
-def auto_correlate_peridoc_sequences(sequence_one, sequence_two):
+def auto_correlate_peridoc_sequence(sequence):
     return None
