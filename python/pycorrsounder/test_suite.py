@@ -41,8 +41,8 @@ class Corrsounder(unittest.TestCase):
         Seq0 = np.fft.fft(seq0)
         Seq1 = np.fft.fft(seq1)
         exp = np.fft.ifft(np.multiply(np.conj(Seq0), Seq1))
-        self.assertEqual(len(seq_exp), len(seq_res))
-        for sample_exp, sample_res in zip(seq_exp, seq_res):
+        self.assertEqual(len(exp), len(res))
+        for sample_exp, sample_res in zip(exp, res):
             self.assertAlmostEqual(sample_exp, sample_exp)
 
     def test_auto_correlate_sequences(self):
