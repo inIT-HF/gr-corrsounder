@@ -33,7 +33,17 @@ class Corrsounder(unittest.TestCase):
         self.assertAlmostEqual(res[N_seq-1], exp_zero_tap)
 
     def test_cross_correlate_peridoc_sequences(self):
-        self.assertEqual(True, False)
+        ''' Test with circular cross-correlation theorem '''
+        N_seq = 10
+        seq0 = np.random.rand(N_seq) + 1j * np.random.rand(N_seq)
+        seq1 = np.random.rand(N_seq) + 1j * np.random.rand(N_seq)
+        res = corrsounder.cross_correlate_peridoc_sequences(seq0, seq1)
+        Seq0 = np.fft.fft(seq0)
+        Seq1 = np.fft.fft(seq1)
+        exp = np.fft.ifft(np.multiply(np.conj(Seq0), Seq1))
+        self.assertEqual(len(seq_exp), len(seq_res))
+        for sample_exp, sample_res in zip(seq_exp, seq_res):
+            self.assertAlmostEqual(sample_exp, sample_exp)
 
     def test_auto_correlate_sequences(self):
         self.assertEqual(True, False)
