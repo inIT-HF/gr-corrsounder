@@ -4,19 +4,23 @@ from . import *
 
 class Corrsounder(unittest.TestCase):
     def test_sequence_frank_zadoff_chu(self):
-        N_fzc = 10
-        fzc_seq = corrsounder.sequence_frank_zadoff_chu(N_fzc, 1)
-        # Check constant amplitude
-        for sample in fzc_seq:
-            self.assertAlmostEqual(np.abs(sample), 1.0)
-
-        # Check zero autocorrelation
-        fzc_seq_acf = corrsounder.auto_correlate_peridoc_sequence(fzc_seq)
-        for sample in fzc_seq_acf[1:]:
-            self.assertAlmostEqual(np.abs(sample), 0.0)
+        ''' Check exemplary FZC sequence '''
+        N_seq = 10
+        q = 1
+        seq_res = corrsounder.sequence_frank_zadoff_chu(N_seq, q)
+        seq_exp = [(-1+1.2246467991473533e-15j), (1-1.2246467991473533e-15j), (-1+1.2246467991473533e-15j), (1-1.2246467991473533e-15j), (-1+1.2246467991473533e-15j), (1-1.2246467991473533e-15j), (-1+1.2246467991473533e-15j), (1-1.2246467991473533e-15j), (-1+1.2246467991473533e-15j), (1-1.2246467991473533e-15j)]
+        self.assertEqual(len(seq_exp), len(seq_res))
+        for sample_exp, sample_res in zip(seq_exp, seq_res):
+            self.assertAlmostEqual(sample_exp, sample_res)
 
     def test_sequence_maximum_length(self):
-        self.assertEqual(True, False)
+        ''' Check exemplary MLS'''
+        N_seq = 7
+        seq_res = corrsounder.sequence_maximum_length(N_seq)
+        seq_exp = [(1+0j), (1+0j), (1+0j), (-1+0j), (1+0j), (-1+0j), (-1+0j)]
+        self.assertEqual(len(seq_exp), len(seq_res))
+        for sample_exp, sample_res in zip(seq_exp, seq_res):
+            self.assertAlmostEqual(sample_exp, sample_exp)
 
     def test_cross_correlate_sequences(self):
         self.assertEqual(True, False)
