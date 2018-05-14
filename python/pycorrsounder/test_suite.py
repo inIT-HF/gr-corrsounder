@@ -46,10 +46,24 @@ class Corrsounder(unittest.TestCase):
             self.assertAlmostEqual(sample_exp, sample_exp)
 
     def test_auto_correlate_sequences(self):
-        self.assertEqual(True, False)
+        ''' Auto-correlate random complex sequences '''
+        N_seq = 10
+        seq =  np.random.rand(N_seq) + 1j*np.random.rand(N_seq)
+        res = corrsounder.auto_correlate_sequences(seq)
+        exp_zero_tap = np.sum(np.multiply(seq, np.conj(seq)))
+        self.assertEqual(len(res), N_seq*2-1)
+        self.assertAlmostEqual(res[N_seq-1], exp_zero_tap)
 
     def test_auto_correlate_peridoc_sequences(self):
-        self.assertEqual(True, False)
+        ''' Test with circular auto-correlation theorem '''
+        N_seq = 10
+        seq = np.random.rand(N_seq) + 1j * np.random.rand(N_seq)
+        res = corrsounder.auto_correlate_peridoc_sequences(seq)
+        Seq = np.fft.fft(seq)
+        exp = np.fft.ifft(np.multiply(np.conj(Seq), Seq))
+        self.assertEqual(len(exp), len(res))
+        for sample_exp, sample_res in zip(exp, res):
+            self.assertAlmostEqual(sample_exp, sample_exp)
 
 class TransmissionFactor(unittest.TestCase):
     def test_transmission_factor(self):
