@@ -67,15 +67,54 @@ class Corrsounder(unittest.TestCase):
 
 class TransmissionFactor(unittest.TestCase):
     def test_transmission_factor(self):
-        self.assertEqual(True, False)
+        ''' Test TF based on known IR '''
+        N_ir = 8
+        ir = np.array([0,]*N_ir)
+        ir[0:3] = [0.1,0.8,0.1]
 
-    def test_norm_rician_generator(self):
-        self.assertEqual(True, False)
+        F_c = 1e9
+        T_s = 1e-6
+        frequency_response = np.fft.fft(ir, norm="ortho")
+        tf = transmission_factor.transmission_factor(frequency_response=frequency_response,
+                                                     frequency_center=F_c,
+                                                     bandwidth=1./T_s)
+        self.assertAlmostEqual(tf.frequency_center, F_c)
+        self.assertAlmostEqual(tf.time_resolution, T_s)
+        self.assertEqual(tf.number_points, N_ir)
+
+        self.assertEqual(len(ir), len(tf.impulse_response))
+        for sample_exp, sample_res in zip(ir, tf.impulse_response):
+            self.assertAlmostEqual(sample_exp, sample_exp)
 
     def test_extract_band(self):
-        self.assertEqual(True, False)
+        N_fr = 8
+        F_c = 1e9
+        F_bw = 1e6
+        fr = fr = np.array([1.,]*N_fr)
+        tf = transmission_factor.transmission_factor(frequency_response=fr, frequency_center=F_c, bandwidth=F_bw)
+        F_bw_new = F_bw/2.0
+        tf_new = tf.extract_band(frequency_center=F_c, bandwidth=F_bw_new)
+
+        self.assertEqual(tf_new.number_points, N_fr/2+1)
+        exp = np.array([1., ] * (N_fr/2+1))
+        res = tf_new.frequency_response
+        for sample_exp, sample_res in zip(exp, res):
+            self.assertAlmostEqual(sample_exp, sample_exp)
 
     def test_histogram(self):
+        N_fr = 8
+        F_c = 1e9
+        F_bw = 1e6
+        fr = fr = np.array([1., ] * N_fr)
+        tf = transmission_factor.transmission_factor(frequency_response=fr, frequency_center=F_c, bandwidth=F_bw)
+        hist, bin_centers = tf.histogram(bin_count=3, range_max=2., range_min=0.)
+
+        self.assertEqual(len(hist), 3)
+        self.assertEqual(len(bin_centers), 3)
+        self.assertAlmostEqual(bin_centers[0], 0.5)
+        self.assertAlmostEqual(hist[1], 1.0)
+
+    def test_norm_rician_generator(self):
         self.assertEqual(True, False)
 
     def test_estimate_rician(self):
