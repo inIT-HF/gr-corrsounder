@@ -124,7 +124,16 @@ class TransmissionFactor(unittest.TestCase):
         self.assertEqual(True, False)
 
     def test_estimate_frequency_edge(self):
-        self.assertEqual(True, False)
+        N_fr = 8
+        F_c = 1e9
+        F_bw = 1e6
+        fr = fr = np.array([1., ] * N_fr)
+        fr[0] = 0.
+        tf = transmission_factor.transmission_factor(frequency_response=fr, frequency_center=F_c, bandwidth=F_bw)
+        edge_frequency, edge_index = tf.estimate_frequency_edge()
+
+        self.assertEqual(edge_index, 1)
+        self.assertAlmostEqual(edge_frequency, F_c - F_bw/2.0 + F_bw/float(N_fr))
 
 class UtilsTestCase(unittest.TestCase):
     def test_fraction_to_dB(self):
