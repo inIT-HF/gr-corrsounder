@@ -7,13 +7,14 @@ def sequence_maximum_length(sequence_length):
     return []
 
 def cross_correlate_sequences(sequence_one, sequence_two):
-    return []
+    return np.correlate(np.array(sequence_one), np.array(sequence_two), mode='full')
 
 def cross_correlate_peridoc_sequences(sequence_one, sequence_two):
-    return []
+    N = max(len(sequence_one), len(sequence_two))
+    return np.fft.ifft(np.multiply(np.conj(np.fft.fft(sequence_one, n=N)), np.fft.fft(sequence_two, n=N)))
 
 def auto_correlate_sequence(sequence):
-    return []
+    return np.correlate(np.array(sequence), np.array(sequence), mode='full')
 
 def auto_correlate_peridoc_sequence(sequence):
-    return []
+    return np.fft.ifft(np.multiply(np.conj(np.fft.fft(sequence)), np.fft.fft(sequence)))
