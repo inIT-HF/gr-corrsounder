@@ -105,7 +105,7 @@ class TransmissionFactor(unittest.TestCase):
         N_fr = 8
         F_c = 1e9
         F_bw = 1e6
-        fr = fr = np.array([1., ] * N_fr)
+        fr = np.array([1., ] * N_fr)
         tf = transmission_factor.transmission_factor(frequency_response=fr, frequency_center=F_c, bandwidth=F_bw)
         hist, bin_centers = tf.histogram(bin_count=3, range_max=2., range_min=0.)
 
@@ -121,13 +121,23 @@ class TransmissionFactor(unittest.TestCase):
         self.assertEqual(True, False)
 
     def test_estimate_path_loss_exponent(self):
-        self.assertEqual(True, False)
+        ''' Test ideal path-loss conditions '''
+        N_fr = 8
+        F_c = 1e6
+        F_bw = 1e6
+        d = 1e3
+        G_ant = 1.0
+        fspl = 0.023878112829131781
+        fr = np.array([fspl, ] * N_fr)
+        tf = transmission_factor.transmission_factor(frequency_response=fr, frequency_center=F_c, bandwidth=F_bw)
+        n, _ = tf.estimate_path_loss_exponent(antenna_gain=G_ant, distance=d)
+        self.assertAlmostEqual(n, 2.0, places=2)
 
     def test_estimate_frequency_edge(self):
         N_fr = 8
         F_c = 1e9
         F_bw = 1e6
-        fr = fr = np.array([1., ] * N_fr)
+        fr = np.array([1., ] * N_fr)
         fr[0] = 0.
         tf = transmission_factor.transmission_factor(frequency_response=fr, frequency_center=F_c, bandwidth=F_bw)
         edge_frequency, edge_index = tf.estimate_frequency_edge()
