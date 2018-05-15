@@ -127,11 +127,11 @@ class TransmissionFactor(unittest.TestCase):
         F_bw = 1e6
         d = 1e3
         G_ant = 1.0
-        fspl = 0.023878112829131781
-        fr = np.array([fspl, ] * N_fr)
+        fspl = (4.* np.pi * d * F_c / 3e8)**2
+        fr = np.array([1./fspl, ] * N_fr)
         tf = transmission_factor.transmission_factor(frequency_response=fr, frequency_center=F_c, bandwidth=F_bw)
         n, _ = tf.estimate_path_loss_exponent(antenna_gain=G_ant, distance=d)
-        self.assertAlmostEqual(n, 2.0, places=2)
+        self.assertAlmostEqual(n, 2.0)
 
     def test_estimate_frequency_edge(self):
         N_fr = 8
