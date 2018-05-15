@@ -160,16 +160,36 @@ class UtilsTestCase(unittest.TestCase):
         self.assertAlmostEqual(np.floor(filesize/8/255), n_sequences)
 
     def test_discrete_fourier_transform(self):
-        self.assertEqual(True, False)
+        N = 8
+        x = [1.,]*N
+        X = [0.,]*N
+        X[N/2-1] = N
+        res = utils.discrete_fourier_transform(x)
+        np.testing.assert_almost_equal(res, X)
 
     def test_discrete_fourier_transform_frequency(self):
-        self.assertEqual(True, False)
+        N = 8
+        T_s = 1.
+        df = 1./float(T_s*N)
+        f_start = -1./(2.*T_s)
+        exp = f_start + df * np.arange(N)
+        res = utils.discrete_fourier_transform_frequency(n_fft=N, time_resolution=T_s)
+        np.testing.assert_almost_equal(res, exp)
 
     def test_inverse_discrete_fourier_transform(self):
-        self.assertEqual(True, False)
+        N = 8
+        x = [1., ] * N
+        X = [0., ] * N
+        X[N / 2 - 1] = N
+        res = utils.discrete_inverse_fourier_transform(X)
+        np.testing.assert_almost_equal(res, x)
 
     def test_inverse_discrete_fourier_transform_time(self):
-        self.assertEqual(True, False)
+        N = 8
+        T_s = 1.
+        exp = T_s * np.arange(N)
+        res = utils.inverse_discrete_fourier_transform_time(n_ifft=N, bandwidth=1./T_s)
+        np.testing.assert_almost_equal(res, exp)
 
 class ErrorCorrectionTestCase(unittest.TestCase):
     def test_adjust_through(self):
