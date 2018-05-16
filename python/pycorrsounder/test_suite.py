@@ -153,7 +153,7 @@ class UtilsTestCase(unittest.TestCase):
         N = 8
         x = [1.,]*N
         X = [0.,]*N
-        X[N/2-1] = N
+        X[N/2] = N
         res = utils.discrete_fourier_transform(x)
         np.testing.assert_almost_equal(res, X)
 

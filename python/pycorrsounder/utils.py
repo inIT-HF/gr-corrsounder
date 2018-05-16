@@ -13,7 +13,7 @@ def generator_read_raw_complex64_frame(file_name, frame_length):
             yield frame
 
 def discrete_fourier_transform(x):
-    return np.fft.fftshift(np.fft.fft(x, norm='ortho'))
+    return np.fft.fftshift(np.fft.fft(x))
 
 def discrete_fourier_transform_frequency(n_fft, time_resolution, center_frequency=0.0):
     return np.fft.fftshift(np.fft.fftfreq(n=n_fft, d=time_resolution)) + center_frequency
