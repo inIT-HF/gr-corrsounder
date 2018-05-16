@@ -105,9 +105,11 @@ class TransmissionFactor(unittest.TestCase):
         np.testing.assert_almost_equal(hist, [0., 1., 0.])
 
     def test_norm_rician_generator(self):
+        # TODO: Add unit test Normalized Rician distribution generator
         self.assertEqual(True, False)
 
     def test_estimate_rician(self):
+        # TODO: Add unit test Normalized Rician distribution estimator
         self.assertEqual(True, False)
 
     def test_estimate_path_loss_exponent(self):
