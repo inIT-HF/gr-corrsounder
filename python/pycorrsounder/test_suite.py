@@ -99,12 +99,10 @@ class TransmissionFactor(unittest.TestCase):
         F_bw = 1e6
         fr = np.array([1., ] * N_fr)
         tf = transmission_factor.transmission_factor(frequency_response=fr, frequency_center=F_c, bandwidth=F_bw)
-        hist, bin_centers = tf.histogram(bin_count=3, range_max=2., range_min=0.)
+        hist, bin_centers = tf.histogram(bin_count=3, range_max=2.5, range_min=-0.5)
 
-        self.assertEqual(len(hist), 3)
-        self.assertEqual(len(bin_centers), 3)
-        self.assertAlmostEqual(bin_centers[0], 0.5)
-        self.assertAlmostEqual(hist[1], 1.0)
+        np.testing.assert_almost_equal(bin_centers, [0., 1., 2.])
+        np.testing.assert_almost_equal(hist, [0., 1., 0.])
 
     def test_norm_rician_generator(self):
         self.assertEqual(True, False)
@@ -116,14 +114,14 @@ class TransmissionFactor(unittest.TestCase):
         ''' Test ideal path-loss conditions '''
         N_fr = 8
         F_c = 1e6
-        F_bw = 1e6
+        F_bw = 1e0
         d = 1e3
         G_ant = 1.0
         fspl = (4.* np.pi * d * F_c / 3e8)**2
-        fr = np.array([1./fspl, ] * N_fr)
+        fr = np.sqrt([1./fspl, ] * N_fr)
         tf = transmission_factor.transmission_factor(frequency_response=fr, frequency_center=F_c, bandwidth=F_bw)
         n, _ = tf.estimate_path_loss_exponent(antenna_gain=G_ant, distance=d)
-        self.assertAlmostEqual(n, 2.0)
+        self.assertAlmostEqual(n, 2.00, places=3)
 
     def test_estimate_frequency_edge(self):
         N_fr = 8
