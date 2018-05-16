@@ -24,6 +24,7 @@
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 from fzc_source_c import fzc_source_c
+from pycorrsounder import corrsounder
 
 class qa_fzc_source_c (gr_unittest.TestCase):
 
@@ -33,11 +34,19 @@ class qa_fzc_source_c (gr_unittest.TestCase):
     def tearDown (self):
         self.tb = None
 
-    def test_001_t (self):
-        # set up fg
-        self.tb.run ()
-        # check data
-        self.assertTrue(False)
+    def test_001_single_sequence (self):
+        N = 1024
+        q = 7
+        expected_result = corrsounder.sequence_frank_zadoff_chu(sequence_length=N, q=q)
+
+        dut = fzc_source_c(n_fzc=N, q=q, repeat=False)
+        dst = blocks.vector_sink_c(vlen=1)
+
+        self.tb.connect(dut, dst)
+        self.tb.run()
+
+        result_data = dst.data()
+        self.assertFloatTuplesAlmostEqual(expected_result, result_data, 6)
 
 
 if __name__ == '__main__':
