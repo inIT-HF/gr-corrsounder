@@ -19,7 +19,7 @@ def discrete_fourier_transform_frequency(n_fft, time_resolution, center_frequenc
     return np.fft.fftshift(np.fft.fftfreq(n=n_fft, d=time_resolution)) + center_frequency
 
 def inverse_discrete_fourier_transform(X):
-    return np.fft.ifftshift(np.fft.ifft(X, norm='ortho'))
+    return np.fft.ifft(np.fft.ifftshift(X))
 
 def inverse_discrete_fourier_transform_time(n_ifft, bandwidth):
-    return np.linspace(0., float(n_ifft)/bandwidth, num=n_ifft)
+    return np.linspace(0., float(n_ifft-1)/bandwidth, num=n_ifft)

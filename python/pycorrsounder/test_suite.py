@@ -168,9 +168,9 @@ class UtilsTestCase(unittest.TestCase):
 
     def test_inverse_discrete_fourier_transform(self):
         N = 8
-        x = [1., ] * N
-        X = [0., ] * N
-        X[N / 2 - 1] = N
+        x = [1.,]*N
+        X = [0.,]*N
+        X[N/2] = N
         res = utils.inverse_discrete_fourier_transform(X)
         np.testing.assert_almost_equal(res, x)
 
