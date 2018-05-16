@@ -21,7 +21,7 @@
 # This is free software, and you are welcome to redistribute it
 # under certain conditions; type `show c' for details.
 
-from gnuradio import gr
+from gnuradio import gr, filter
 
 class error_correction_cc(gr.hier_block2):
     """
