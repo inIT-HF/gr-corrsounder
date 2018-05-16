@@ -9,18 +9,14 @@ class Corrsounder(unittest.TestCase):
         q = 1
         res = corrsounder.sequence_frank_zadoff_chu(N_seq, q)
         exp = [(-1+1.2246467991473533e-15j), (1-1.2246467991473533e-15j), (-1+1.2246467991473533e-15j), (1-1.2246467991473533e-15j), (-1+1.2246467991473533e-15j), (1-1.2246467991473533e-15j), (-1+1.2246467991473533e-15j), (1-1.2246467991473533e-15j), (-1+1.2246467991473533e-15j), (1-1.2246467991473533e-15j)]
-        self.assertEqual(len(exp), len(res))
-        for sample_exp, sample_res in zip(exp, res):
-            self.assertAlmostEqual(sample_exp, sample_res)
+        np.testing.assert_almost_equal(res, exp)
 
     def test_sequence_maximum_length(self):
         ''' Check exemplary MLS'''
         N_seq = 7
-        seq_res = corrsounder.sequence_maximum_length(N_seq)
-        seq_exp = [(1+0j), (1+0j), (1+0j), (-1+0j), (1+0j), (-1+0j), (-1+0j)]
-        self.assertEqual(len(seq_exp), len(seq_res))
-        for sample_exp, sample_res in zip(seq_exp, seq_res):
-            self.assertAlmostEqual(sample_exp, sample_exp)
+        res = corrsounder.sequence_maximum_length(N_seq)
+        exp = [(1+0j), (1+0j), (1+0j), (-1+0j), (1+0j), (-1+0j), (-1+0j)]
+        np.testing.assert_almost_equal(res, exp)
 
     def test_cross_correlate_sequences(self):
         ''' Cross-correlate random complex sequences '''
