@@ -44,7 +44,9 @@ namespace gr {
     sequence_gate_cc_impl::sequence_gate_cc_impl(int sequence_length, double sample_rate)
       : gr::block("sequence_gate_cc",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
-              gr::io_signature::make(1, 1, sizeof(gr_complex)))
+              gr::io_signature::make(1, 1, sizeof(gr_complex))),
+        d_sequence_length(sequence_length),
+        d_sample_rate(sample_rate)
     {}
 
     /*
@@ -58,6 +60,7 @@ namespace gr {
     sequence_gate_cc_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
     {
       /* <+forecast+> e.g. ninput_items_required[0] = noutput_items */
+      ninput_items_required[0] = d_sequence_length + noutput_items;
     }
 
     int
@@ -72,10 +75,11 @@ namespace gr {
       // Do <+signal processing+>
       // Tell runtime system how many input items we consumed on
       // each input stream.
-      consume_each (noutput_items);
+      //consume_each (noutput_items);
+      consume_each (1);
 
       // Tell runtime system how many output items we produced.
-      return noutput_items;
+      return 1;
     }
 
   } /* namespace corrsounder */

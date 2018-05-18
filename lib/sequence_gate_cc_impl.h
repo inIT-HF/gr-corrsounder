@@ -32,7 +32,8 @@ namespace gr {
     class sequence_gate_cc_impl : public sequence_gate_cc
     {
      private:
-      // Nothing to declare in this block.
+      int d_sequence_length;
+      double d_sample_rate;
 
      public:
       sequence_gate_cc_impl(int sequence_length, double sample_rate);
