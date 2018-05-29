@@ -37,13 +37,13 @@ class moving_average_vcc(gr.sync_block):
             in_sig=[(np.complex64, vlen)],
             out_sig=[(np.complex64, vlen)])
         
-        self.vmem = np.zeros(vlen)
-        self.count = 0.
+        self.vmem = np.zeros(shape=(window, vlen), dtype=np.complex64)
+        self.index = 0
+        self.window = window
 
     def work(self, input_items, output_items):
-        self.vmem = self.vmem + np.array(input_items[0])
-        print self.vmem
-        self.count = self.count + 1.
-        output_items[0][:] = self.vmem/self.count
+        self.vmem[self.index, :] = np.array(input_items[0][0])
+        self.index = (self.index+1) % self.window
+        output_items[0][:] = np.mean(self.vmem, axis=0)
         return 1
 

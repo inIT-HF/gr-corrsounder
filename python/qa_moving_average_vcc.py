@@ -37,7 +37,7 @@ class qa_moving_average_vcc (gr_unittest.TestCase):
         vlen = 5
         window = 2
         src_data = [1., ] * vlen + [0, ] * vlen + [0, ] * vlen
-        expected_result = [1., ] * vlen + [0.5, ] * vlen + [0, ] * vlen
+        expected_result = [0.5, ] * vlen + [0.5, ] * vlen + [0, ] * vlen
 
         src = blocks.vector_source_c(data=src_data, vlen=vlen, repeat=False)
         dut = moving_average_vcc(vlen=vlen, window=window)
