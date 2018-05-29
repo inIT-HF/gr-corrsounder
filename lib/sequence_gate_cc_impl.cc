@@ -26,6 +26,7 @@
 #endif
 
 #include <gnuradio/io_signature.h>
+#include <pmt/pmt.h>
 #include "sequence_gate_cc_impl.h"
 
 namespace gr {
@@ -69,14 +70,21 @@ namespace gr {
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
-      //const <+ITYPE+> *in = (const <+ITYPE+> *) input_items[0];
-      //<+OTYPE+> *out = (<+OTYPE+> *) output_items[0];
+      const gr_complex *in = (const gr_complex *) input_items[0];
+      gr_complex *out = (gr_complex *) output_items[0];
 
-      // Do <+signal processing+>
+      pmt::pmt_t tag_key = pmt::intern("overflows");
+      std::vector<tag_t> tags;
+      get_tags_in_window(tags, 0, 0, noutput_items, tag_key);
+
       // Tell runtime system how many input items we consumed on
       // each input stream.
-      //consume_each (noutput_items);
-      consume_each (1);
+      if(tags.size() > 0)
+      {
+        uint64_t consume_input_items = tags[0].offset - this->nitems_read(0);
+        consume_each (consume_input_items);
+      }
+
 
       // Tell runtime system how many output items we produced.
       return 1;
