@@ -18,10 +18,10 @@ corrsounder.fzc_source_c(n_fzc=$n, q=$q, repeat=True)
           <name>FZC</name>
           <key>fzc</key>
       </option>
-      <option>
+      <!--<option>
           <name>MLS</name>
           <key>mls</key>
-      </option>
+      </option>-->
   </param>
   <param>
     <name>FZC Parameter q</name>
@@ -33,7 +33,7 @@ corrsounder.fzc_source_c(n_fzc=$n, q=$q, repeat=True)
   <param>
     <name>Sequence Length</name>
     <key>n</key>
-    <value>255</value>
+    <value>1024</value>
     <type>int</type>
   </param>
   <source>
