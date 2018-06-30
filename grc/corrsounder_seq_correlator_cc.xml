@@ -18,10 +18,10 @@ corrsounder.fzc_correlator_c(n_fzc=$n, q=$q)
           <name>FZC</name>
           <key>fzc</key>
       </option>
-      <option>
+      <!--<option>
           <name>MLS</name>
           <key>mls</key>
-      </option>
+      </option>-->
   </param>
   <param>
     <name>FZC Parameter q</name>
@@ -33,7 +33,7 @@ corrsounder.fzc_correlator_c(n_fzc=$n, q=$q)
   <param>
     <name>Sequence Length</name>
     <key>n</key>
-    <value>255</value>
+    <value>1024</value>
     <type>int</type>
   </param>
   <sink>
