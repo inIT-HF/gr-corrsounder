@@ -20,9 +20,9 @@
 install(FILES
     corrsounder_seq_source_c.xml
     corrsounder_seq_correlator_cc.xml
-    corrsounder_ir_snr.xml
-    corrsounder_ramdisk_file_sink_vc.xml
-    corrsounder_moving_average_vcc.xml
-    corrsounder_seq_gate_cc.xml
+    # corrsounder_ir_snr.xml
+    # corrsounder_ramdisk_file_sink_vc.xml
+    # corrsounder_moving_average_vcc.xml
+    # corrsounder_seq_gate_cc.xml
     corrsounder_error_correction_cc.xml DESTINATION share/gnuradio/grc/blocks
 )
