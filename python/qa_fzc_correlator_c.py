@@ -38,9 +38,9 @@ class qa_fzc_correlator_c (gr_unittest.TestCase):
         N = 1024
         q = 7
         src_data = corrsounder.sequence_frank_zadoff_chu(sequence_length=N, q=q)
-        expected_result = corrsounder.auto_correlate_sequence(src_data)
+        expected_result = corrsounder.auto_correlate_sequence(src_data) / N
 
-        src = blocks.vector_source_c(data=src_data, vlen=1, repeat=False)
+        src = blocks.vector_source_c(data=src_data*3, vlen=1, repeat=False)
         dut = fzc_correlator_c(n_fzc=N, q=q)
         dst = blocks.vector_sink_c(vlen=1)
 
@@ -48,7 +48,7 @@ class qa_fzc_correlator_c (gr_unittest.TestCase):
         self.tb.run()
 
         result_data = dst.data()
-        self.assertFloatTuplesAlmostEqual(expected_result, result_data, 6)
+        self.assertFloatTuplesAlmostEqual(expected_result, result_data[0:-3])
 
 
 if __name__ == '__main__':
