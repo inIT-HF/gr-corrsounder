@@ -26,7 +26,24 @@
 #endif
 
 #include <gnuradio/io_signature.h>
+#include <pmt/pmt.h>
+#include <vector>
 #include "sequence_gate_cc_impl.h"
+
+#define OUTPUT_SAMPLES {\
+    uint64_t output_samples = (d_mem.size() / d_sequence_length) * d_sequence_length; \
+    if(output_samples > 0) \
+    { \
+        produce_output_items += output_samples;  \
+        for(uint64_t i = 0; i < output_samples; i++) \
+        { \
+          *out++ = d_mem.front(); \
+          d_mem.pop_front(); \
+        } \
+    } \
+}
+
+#define REL_OFFSET(tag) tag.offset - this->nitems_read(0)
 
 namespace gr {
   namespace corrsounder {
@@ -44,7 +61,11 @@ namespace gr {
     sequence_gate_cc_impl::sequence_gate_cc_impl(int sequence_length, double sample_rate)
       : gr::block("sequence_gate_cc",
               gr::io_signature::make(1, 1, sizeof(gr_complex)),
-              gr::io_signature::make(1, 1, sizeof(gr_complex)))
+              gr::io_signature::make(1, 1, sizeof(gr_complex))),
+        d_sequence_length(sequence_length),
+        d_sample_rate(sample_rate),
+        d_mem(),
+        d_trigger_tag_key(pmt::intern("overflows"))
     {}
 
     /*
@@ -57,7 +78,7 @@ namespace gr {
     void
     sequence_gate_cc_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
     {
-      /* <+forecast+> e.g. ninput_items_required[0] = noutput_items */
+      ninput_items_required[0] = noutput_items;
     }
 
     int
@@ -66,16 +87,68 @@ namespace gr {
                        gr_vector_const_void_star &input_items,
                        gr_vector_void_star &output_items)
     {
-      //const <+ITYPE+> *in = (const <+ITYPE+> *) input_items[0];
-      //<+OTYPE+> *out = (<+OTYPE+> *) output_items[0];
+      const gr_complex *in = (const gr_complex *) input_items[0];
+      gr_complex *out = (gr_complex *) output_items[0];
 
-      // Do <+signal processing+>
-      // Tell runtime system how many input items we consumed on
-      // each input stream.
-      consume_each (noutput_items);
+      uint64_t max_consume_input_items = ninput_items[0];
+
+      if(max_consume_input_items > noutput_items)
+      {
+        max_consume_input_items = noutput_items;
+      }
+
+      std::vector<tag_t> overflow_tags;
+      get_tags_in_window(overflow_tags, 0, 0, max_consume_input_items, d_trigger_tag_key);
+
+      uint64_t consume_input_items = 0;
+      uint64_t produce_output_items = 0;
+
+      OUTPUT_SAMPLES;
+
+      if(overflow_tags.size() > 0)
+      {
+        GR_LOG_INFO(d_logger, "Overflow tag detected");
+
+        //skip/copy samples until overflow
+        for(uint64_t i = 0; i < REL_OFFSET(overflow_tags[0]); i++)
+        {
+          d_mem.push_back(in[i]);
+        }
+
+        OUTPUT_SAMPLES;
+
+        d_mem.clear();
+
+        uint64_t dropped_samples = pmt::to_long(overflow_tags[0].value);
+        uint64_t skip_samples =  (d_sequence_length - (dropped_samples % d_sequence_length) ) % d_sequence_length;
+
+        uint64_t until = max_consume_input_items;
+        if(overflow_tags.size() > 1)
+        {
+          until = REL_OFFSET(overflow_tags[1]);
+        }
+
+        for(uint64_t i = REL_OFFSET(overflow_tags[0]) + skip_samples; i < until; i++)
+        {
+          d_mem.push_back(in[i]);
+        }
+        consume_input_items = until;
+      }
+      else
+      {
+        for(uint64_t i = 0; i < max_consume_input_items; i++)
+        {
+          d_mem.push_back(in[i]);
+        }
+        consume_input_items = max_consume_input_items;
+      }
+
+      OUTPUT_SAMPLES;
+
+      consume_each (consume_input_items);
 
       // Tell runtime system how many output items we produced.
-      return noutput_items;
+      return produce_output_items;
     }
 
   } /* namespace corrsounder */

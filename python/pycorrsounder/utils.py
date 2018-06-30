@@ -13,13 +13,13 @@ def generator_read_raw_complex64_frame(file_name, frame_length):
             yield frame
 
 def discrete_fourier_transform(x):
-    return np.fft.fftshift(np.fft.fft(x, norm='ortho'))
+    return np.fft.fftshift(np.fft.fft(x))
 
 def discrete_fourier_transform_frequency(n_fft, time_resolution, center_frequency=0.0):
     return np.fft.fftshift(np.fft.fftfreq(n=n_fft, d=time_resolution)) + center_frequency
 
 def inverse_discrete_fourier_transform(X):
-    return np.fft.ifftshift(np.fft.ifft(X, norm='ortho'))
+    return np.fft.ifft(np.fft.ifftshift(X))
 
 def inverse_discrete_fourier_transform_time(n_ifft, bandwidth):
-    return np.linspace(0., float(n_ifft)/bandwidth, num=n_ifft)
+    return np.linspace(0., float(n_ifft-1)/bandwidth, num=n_ifft)

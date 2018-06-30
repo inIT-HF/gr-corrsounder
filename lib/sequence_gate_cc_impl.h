@@ -32,7 +32,10 @@ namespace gr {
     class sequence_gate_cc_impl : public sequence_gate_cc
     {
      private:
-      // Nothing to declare in this block.
+      int d_sequence_length;
+      double d_sample_rate;
+      std::list<gr_complex> d_mem;
+      pmt::pmt_t d_trigger_tag_key;
 
      public:
       sequence_gate_cc_impl(int sequence_length, double sample_rate);

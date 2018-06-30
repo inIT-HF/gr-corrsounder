@@ -24,6 +24,7 @@
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 from error_correction_cc import error_correction_cc
+import numpy as np
 
 class qa_error_correction_cc (gr_unittest.TestCase):
 
@@ -33,11 +34,19 @@ class qa_error_correction_cc (gr_unittest.TestCase):
     def tearDown (self):
         self.tb = None
 
-    def test_001_t (self):
-        # set up fg
-        self.tb.run ()
-        # check data
-        self.assertTrue(False)
+    def test_001_one_tap_error_correction (self):
+        src_data = [1. + 0.j, ] * 128
+        expected_result = np.multiply(src_data, 0.5)
+
+        src = blocks.vector_source_c(data=src_data, vlen=1, repeat=False)
+        dut = error_correction_cc(error_term_forward_transmission_tracking=[0.5, ])
+        dst = blocks.vector_sink_c(vlen=1)
+
+        self.tb.connect(src, dut, dst)
+        self.tb.run()
+
+        result_data = dst.data()
+        self.assertFloatTuplesAlmostEqual(expected_result, result_data, 6)
 
 
 if __name__ == '__main__':

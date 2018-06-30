@@ -23,7 +23,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import corrsounder_swig as corrsounder
+from moving_average_vcc import moving_average_vcc
 
 class qa_moving_average_vcc (gr_unittest.TestCase):
 
@@ -33,11 +33,21 @@ class qa_moving_average_vcc (gr_unittest.TestCase):
     def tearDown (self):
         self.tb = None
 
-    def test_001_t (self):
-        # set up fg
-        self.tb.run ()
-        # check data
-        self.assertTrue(False)
+    def test_001_full_window (self):
+        vlen = 5
+        window = 2
+        src_data = [1., ] * vlen + [0, ] * vlen + [0, ] * vlen
+        expected_result = [0.5, ] * vlen + [0.5, ] * vlen + [0, ] * vlen
+
+        src = blocks.vector_source_c(data=src_data, vlen=vlen, repeat=False)
+        dut = moving_average_vcc(vlen=vlen, window=window)
+        dst = blocks.vector_sink_c(vlen=vlen)
+
+        self.tb.connect(src, dut, dst)
+        self.tb.run()
+
+        result_data = dst.data()
+        self.assertFloatTuplesAlmostEqual(expected_result, result_data, 6)
 
 
 if __name__ == '__main__':

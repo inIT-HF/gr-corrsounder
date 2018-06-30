@@ -34,6 +34,7 @@ class qa_ramdisk_file_sink_vc (gr_unittest.TestCase):
         self.tb = None
 
     def test_001_t (self):
+        #TODO: Add RAMDISK unit test
         # set up fg
         self.tb.run ()
         # check data
