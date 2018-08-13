@@ -1,7 +1,7 @@
 import numpy as np
 
 def sequence_frank_zadoff_chu(sequence_length, q):
-    return [pow(-1, q * i) * np.exp(1j * np.pi * q * sequence_length * sequence_length / sequence_length) for i in range(1, sequence_length + 1)]
+    return [pow(-1.0, q * i) * np.exp(1j * np.pi * q * i * i / sequence_length) for i in range(1, sequence_length + 1)]
 
 # Source: gnuradio/gr-digital/lib/glfsr.cc
 glfsr_polynomial_masks = [
