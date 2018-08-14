@@ -1,7 +1,19 @@
 import numpy as np
 
+# Source: https://stackoverflow.com/questions/39678984/efficient-check-if-two-numbers-are-co-primes-relatively-primes
+def gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+def coprime(a, b):
+    return gcd(a, b) == 1
+
 def sequence_frank_zadoff_chu(sequence_length, q):
-    return [pow(-1.0, q * i) * np.exp(1j * np.pi * q * i * i / sequence_length) for i in range(1, sequence_length + 1)]
+    if coprime(sequence_length, q) == 1:
+        return [pow(-1.0, q * i) * np.exp(1j * np.pi * q * i * i / sequence_length) for i in range(1, sequence_length + 1)]
+    else:
+        return -1
 
 # Source: gnuradio/gr-digital/lib/glfsr.cc
 glfsr_polynomial_masks = [
