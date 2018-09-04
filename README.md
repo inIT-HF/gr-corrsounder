@@ -13,15 +13,17 @@
 
 # Build/Install instructions
 
-1. Install/Build GNU Radio
+1. Install/Build GNU Radio (it is recommended to use [PyBOMBS](https://github.com/gnuradio/pybombs))
 
 2. Get *gr-corrsounder* from github - `git clone https://github.com/inIT-HF/gr-corrsounder.git`
 
-3. Configure *gr-corrsounder* - `mkdir build && cd build && cmake ../`
+3. Optional: Change to which prefix *gr-corrsounder* shall be installed - `source ~/corrsounder_prefix/setup_env.sh`
 
-4. Build and install *gr-corrsounder* - `make && sudo make install` 
+4. Configure *gr-corrsounder* - `mkdir build && cd build && cmake ../`
 
-# Contributor
+5. Build and install *gr-corrsounder* - `make && sudo make install` 
+
+# Contributors
 
  * Niels Fliedner
  * Dimitri Block
