@@ -13,7 +13,7 @@ def sequence_frank_zadoff_chu(sequence_length, q):
     if coprime(sequence_length, q) == 1:
         return [pow(-1.0, q * i) * np.exp(1j * np.pi * q * i * i / sequence_length) for i in range(1, sequence_length + 1)]
     else:
-        raise ValueError('The sequence length {!s} and the parameter {!q} must be coprime!'.format(sequence_length, q))
+        raise ValueError('The sequence length and the parameter q must be coprime!')
 
 # Source: gnuradio/gr-digital/lib/glfsr.cc
 glfsr_polynomial_masks = [
