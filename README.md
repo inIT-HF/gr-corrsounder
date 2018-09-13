@@ -23,6 +23,16 @@
 
 5. Build and install *gr-corrsounder* - `make && sudo make install` 
 
+# Uninstall/Remove instructions
+
+1. Navigate to gr-corrsounder/build
+
+2. Optional: Change from which prefix *gr-corrsounder* shall be uninstalled - `source ~/corrsounder_prefix/setup_env.sh`
+
+3. Uninstall *gr-corrsounder* - `sudo make uninstall`
+
+4. Delete the gr-corrsounder folder
+
 # Contributors
 
  * Niels Fliedner
